@@ -1,0 +1,40 @@
+version: '3.6'
+services:
+
+    flask-app:
+        container_name: flask-app
+        build:
+          context: app/
+        ports:
+          - "5500:5500"
+        volumes:
+          - ./app:/app
+          - ./image/image_processing:/app/image_processing
+          - ./image/accurate_predictions:/app/accurate_predictions
+          - ./image/inaccurate_predictions:/app/inaccurate_predictions
+    mlflow:
+      build: ./mlflow/
+      working_dir: /usr/src/app
+      ports:
+        - "8000:8000"
+      volumes:
+        - .:/usr/src/app
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://0.0.0.0:8000"]
+        interval: 10s
+        timeout: 10s
+        retries: 3
+        start_period: 10s
+      command: runServer.sh
+    app_train:
+        container_name: app_train
+        build:
+          context: training/
+        ports:
+          - "5550:5550"
+        volumes:
+          - ./app/models:/training/models
+          - ./data:/training/data
+          - ./image_store/label:/training/label
+        ipc: "host"
+        privileged: true
