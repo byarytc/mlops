@@ -1,0 +1,4 @@
+outs:
+- md5: befc84d8da3a3fe21cf9067091a11ae5
+  size: 87431921
+  path: network.pkl
