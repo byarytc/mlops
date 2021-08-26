@@ -23,7 +23,7 @@ def predict():
         pred_class,pred_idx,outputs = new_learn_cycle.predict(img)
         proc = str(outputs[pred_idx])[9:11]
         predictions[file_name] = [pred_class, proc]
-        if int(proc) >= 90:
+        if int(proc) >= 91:
             shutil.move(os.path.join(src_folder, file_name), f'./exact_predictions/{pred_class}_{proc}.jpg')
         else:
             shutil.move(os.path.join(src_folder, file_name), f'./inexact_predictions/{pred_class}_{proc}.jpg')
